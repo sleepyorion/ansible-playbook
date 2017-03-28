@@ -1,0 +1,3 @@
+- src: https://github.com/sleepyorion/ansible-playbook.git
+  name: p0huynh.java
+  scm: git
