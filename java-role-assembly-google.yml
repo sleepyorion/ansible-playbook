@@ -1,0 +1,43 @@
+boo:
+  oneops_host: '{{host}}'
+  organization: '{{organization}}'
+  api_key: '{{api_key}}'
+  email: '{{email}}'
+  environment_name: 'DEV'
+  ip_output: 'json'
+
+assembly:
+  name: 'java-role-ansible'
+  auto_gen: false
+
+platforms:
+  master:
+    deploy_order: 1
+    pack: oneops/ansible
+    pack_version: '1'
+    encrypted_variables:
+      GIT_USER: '{{git_user}}'
+      GIT_PASSWORD: '{{git_pass}}'
+    components:
+      compute:
+        size: 'M'
+      os:
+        ostype: 'centos-7.2'
+      user:
+        '{{username}}':
+          system_account: true
+          sudoer: true
+          username: '{{username}}'
+          description: "account for {{username}}"
+          authorized_keys: '["{{file(~/.ssh/id_rsa.pub)}}"]'
+      ansible:
+        playbook: 'https://github.com/sleepyorion/ansible-playbook.git?path=java_playbook.yml'
+environment:
+  global_dns: 'false'
+  availability: 'single'
+  #profile: 'DEV'
+  clouds:
+    GCP:
+      priority: '1'
+      dpmt_order: '1'
+      pct_scale: '100'
